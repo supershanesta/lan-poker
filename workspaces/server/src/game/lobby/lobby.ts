@@ -25,6 +25,7 @@ export class Lobby {
     console.log('ADD CLIENT:', playerId, this.id);
     this.instance.players.push({
       id: playerId,
+      turn: false,
       socketId: client.id,
       lobbyId: client.data.lobby.id,
       name: userName,

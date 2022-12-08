@@ -13,13 +13,23 @@ export class Deck {
   public dealCards(players: Player[], qty: number): void {
     const cards: CardState[] = [];
     players.forEach((player) => {
-      for (let i = 1; i < qty; i++) {
+      for (let i = 0; i < qty; i++) {
         this.cards[this.top + i].ownerId = player.id;
         this.cards[this.top + i].isRevealed = true;
         cards.push(this.cards[this.top + i]);
       }
       this.top += qty;
     });
+  }
+
+  public dealPublicCards(qty: number): void {
+    const cards: CardState[] = [];
+    for (let i = 0; i < qty; i++) {
+      this.cards[this.top + i].ownerId = 0;
+      this.cards[this.top + i].isRevealed = true;
+      cards.push(this.cards[this.top + i]);
+    }
+    this.top += qty;
   }
 
   private initializeCards(): void {

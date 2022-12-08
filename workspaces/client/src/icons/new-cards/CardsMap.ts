@@ -57,8 +57,8 @@ import {
 } from '@icons/new-cards/index';
 import { CardType } from '@memory-cards/shared/common/Deck';
 
-export const CardsMap = (card: CardType) => {
-  const cardValue = Cards[`${card.suite}${card.value}`];
+export const CardsMap = (card: CardType | null) => {
+  const cardValue = card ? Cards[`${card.suite}${card.value}`] : null;
   switch (cardValue) {
     case null:
       return Back;

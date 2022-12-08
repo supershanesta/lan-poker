@@ -36,9 +36,9 @@ export class Instance {
     if (this.hasStarted) {
       return;
     }
-
+    this.dealPlayerCards();
     this.hasStarted = true;
-
+    this.players[0].turn = true;
     this.lobby.dispatchToLobby<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
       color: 'blue',
       message: 'Game started !',

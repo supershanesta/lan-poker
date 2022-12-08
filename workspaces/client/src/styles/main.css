@@ -3,5 +3,13 @@
 @tailwind utilities;
 
 .btn {
-  @apply bg-emerald-800 text-white px-3 py-2 font-bold;
+  @apply bg-green-700 text-white px-3 py-2 font-bold;
+}
+
+.btn-warning {
+  @apply bg-orange-600 text-white px-3 py-2 font-bold;
+}
+
+.btn-neutral {
+  @apply bg-lime-400 text-white px-3 py-2 font-bold;
 }

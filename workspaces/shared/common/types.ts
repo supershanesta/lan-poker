@@ -13,6 +13,7 @@ export type CardInstance = {
 
 export type Player = {
   id: number
+  turn: boolean
   socketId: string | null
   lobbyId: string | null
   name: string | null

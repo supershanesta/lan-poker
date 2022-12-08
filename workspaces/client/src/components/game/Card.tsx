@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { CardStateDefinition } from '@memory-cards/shared/common/types';
+import { CardInstance } from '@memory-cards/shared/common/types';
 import { CardsMap } from '@icons/new-cards/CardsMap';
 
 type Props = {
-  card: CardStateDefinition;
-  cardIndex: number;
+  card: CardInstance;
+  cardIndex: number | null;
   onRevealCard: (cardIndex: number) => void;
-  clientId: string;
+  clientId: number;
 };
 
 export default function Card({card, cardIndex, onRevealCard, clientId}: Props) {
@@ -24,13 +24,12 @@ export default function Card({card, cardIndex, onRevealCard, clientId}: Props) {
     >
       <Image
         src={CardsMap(card.card)}
+        alt='card'
         className={`
           transition
           hover:scale-[0.85]
           ${card.card === null ? 'cursor-pointer' : ''}
-          ${cardIndex % 2 === 0 ? 'hover:rotate-[-8deg]' : 'hover:rotate-[8deg]'}
         `}
-        onClick={() => card.card === null && onRevealCard(cardIndex)}
       />
     </div>
   );
