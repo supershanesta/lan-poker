@@ -21,7 +21,7 @@ export default class SocketManager
   private connectionLost: boolean = false;
 
   constructor()
-  {
+  { 
     this.socket = io(process.env.NEXT_PUBLIC_WS_API_URL as string, {
       autoConnect: false,
       path: '/wsapi',
@@ -50,8 +50,11 @@ export default class SocketManager
     return this.socket.id;
   }
 
-  connect(): void
+  connect(id: number): void
   {
+    this.socket.io.opts.query = {
+      id: id
+    }
     this.socket.connect();
   }
 

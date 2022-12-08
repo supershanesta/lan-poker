@@ -1,7 +1,5 @@
 import { ClientEvents } from '@memory-cards/shared/client/ClientEvents';
-import useSocketManager from '@hooks/useSocketManager';
-import { useRecoilValue } from 'recoil';
-import { CurrentLobbyState } from '@components/game/states';
+import { useLobbyContext } from '@hooks/useGameContext';
 import Card from '@components/game/Card';
 import { Badge, LoadingOverlay, Overlay } from '@mantine/core';
 import { MantineColor } from '@mantine/styles';
@@ -9,17 +7,15 @@ import { showNotification } from '@mantine/notifications';
 import { emitEvent } from '@utils/analytics';
 
 export default function Game() {
-  const {sm} = useSocketManager();
-  const currentLobbyState = useRecoilValue(CurrentLobbyState)!;
-  const clientId = sm.getSocketId()!;
+  const {sm, lobbyState, clientId, me} = useLobbyContext();
   let clientScore = 0;
   let opponentScore = 0;
 
-  for (const scoreId in currentLobbyState.scores) {
+  for (const scoreId in lobbyState?.scores) {
     if (scoreId === clientId) {
-      clientScore = currentLobbyState.scores[scoreId];
+      clientScore = lobbyState?.scores[scoreId] || 0;
     } else {
-      opponentScore = currentLobbyState.scores[scoreId];
+      opponentScore = lobbyState?.scores[scoreId] || 0;
     }
   }
 
@@ -47,20 +43,22 @@ export default function Game() {
     emitEvent('card_revealed');
   };
 
-  const onReplay = () => {
+/*  const onReplay = () => {
     sm.emit({
       event: ClientEvents.LobbyCreate,
       data: {
-        mode: currentLobbyState.mode,
-        delayBetweenRounds: currentLobbyState.delayBetweenRounds,
+        mode: lobbyState?.mode,
+        delayBetweenRounds: lobbyState?.delayBetweenRounds,
       },
     });
 
     emitEvent('lobby_create');
   };
 
+*/
+
   const copyLobbyLink = async () => {
-    const link = `${window.location.origin}?lobby=${currentLobbyState.lobbyId}`;
+    const link = `${window.location.origin}?lobby=${lobbyState?.lobbyId}`;
     await navigator.clipboard.writeText(link);
 
     showNotification({
@@ -72,28 +70,28 @@ export default function Game() {
   return (
     <div>
       <div className="flex justify-between items-center my-5">
-        <Badge size="xl">Your score: {clientScore}</Badge>
+        <Badge size="xl">{me?.name}: {clientScore}</Badge>
         <Badge variant="outline">
-          {!currentLobbyState.hasStarted
+          {!lobbyState?.hasStarted
             ? (<span>Waiting for opponent...</span>)
-            : (<span>Round {currentLobbyState.currentRound}</span>)
+            : (<span>Round {lobbyState.currentRound}</span>)
           }
         </Badge>
 
-        {currentLobbyState.mode === 'duo' && <Badge size="xl" color="red">Opponent score: {opponentScore}</Badge>}
+        {lobbyState?.mode === 'duo' && <Badge size="xl" color="red">Opponent score: {opponentScore}</Badge>}
       </div>
 
-      {currentLobbyState.isSuspended && (
+      {lobbyState?.isSuspended && (
         <div className="text-center text-lg">
           Next round starting soon, remember cards !
         </div>
       )}
 
       <div className="grid grid-cols-7 gap-4 relative select-none">
-        {currentLobbyState.hasFinished && <Overlay opacity={0.6} color="#000" blur={2} zIndex={5}/>}
-        <LoadingOverlay visible={!currentLobbyState.hasStarted || currentLobbyState.isSuspended}/>
+        {lobbyState?.hasFinished && <Overlay opacity={0.6} color="#000" blur={2} zIndex={5}/>}
+        <LoadingOverlay visible={!lobbyState?.hasStarted || lobbyState?.isSuspended}/>
 
-        {currentLobbyState.cards.map((card, i) => (
+        {lobbyState?.cards.map((card, i) => (
           <div
             key={i}
             className="col-span-1"
@@ -108,14 +106,14 @@ export default function Game() {
         ))}
       </div>
 
-      {currentLobbyState.hasFinished && (
+     {lobbyState?.hasFinished && (
         <div className="text-center mt-5 flex flex-col">
           <Badge size="xl" color={resultColor} className="self-center">{result}</Badge>
-          <button className="mt-3 self-center" onClick={onReplay}>Play again ?</button>
+          <button className="mt-3 self-center" onClick={() => {console.log('testing')}}>Play again ?</button>
         </div>
       )}
 
-      {!currentLobbyState.hasStarted && (
+      {!lobbyState?.hasStarted && (
         <div className="text-center mt-5">
           <button className="btn" onClick={copyLobbyLink}>Copy lobby link</button>
         </div>

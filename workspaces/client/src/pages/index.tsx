@@ -6,7 +6,7 @@ const Page: NextPage = () => {
   return (
     <div className="container max-w-2xl mt-16">
       <Header/>
-      <GameManager/>
+        <GameManager/>
     </div>
   );
 };

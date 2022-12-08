@@ -1,22 +1,24 @@
-import useSocketManager from '@hooks/useSocketManager';
+import { useLobbyContext } from '@hooks/useGameContext';
 import { useEffect } from 'react';
 import { Listener } from '@components/websocket/types';
 import { ServerEvents } from '@memory-cards/shared/server/ServerEvents';
 import { ServerPayloads } from '@memory-cards/shared/server/ServerPayloads';
-import { useRecoilState } from 'recoil';
-import { CurrentLobbyState } from '@components/game/states';
 import Introduction from '@components/game/Introduction';
 import Game from '@components/game/Game';
 import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';
+import JoinGame from './JoinGame';
 
 export default function GameManager() {
   const router = useRouter();
-  const {sm} = useSocketManager();
-  const [lobbyState, setLobbyState] = useRecoilState(CurrentLobbyState);
+  const {sm, me, setMeState, clientId, lobbyState, setLobbyState } = useLobbyContext();
+
+  console.log('DATA', me, lobbyState, clientId);
 
   useEffect(() => {
-    sm.connect();
+    sm.connect(me?.id || 0);
+
+    console.log('Checking for lobby state change')
 
     const onLobbyState: Listener<ServerPayloads[ServerEvents.LobbyState]> = async (data) => {
       setLobbyState(data);
@@ -44,10 +46,13 @@ export default function GameManager() {
       sm.removeListener(ServerEvents.LobbyState, onLobbyState);
       sm.removeListener(ServerEvents.GameMessage, onGameMessage);
     };
-  }, []);
+  }, [router, setLobbyState, sm]);
 
   if (lobbyState === null) {
     return <Introduction/>;
+  }
+  if (!me.lobbyId) {
+    return <JoinGame/>;
   }
 
   return <Game/>;

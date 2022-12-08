@@ -8,6 +8,7 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { pageView } from '@utils/analytics';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import NoSSR from 'react-no-ssr';
 
 import '@styles/main.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,6 +26,7 @@ export default function _App(props: AppProps) {
   }, [router.events]);
 
   return (
+    <NoSSR>
     <RecoilRoot>
       <Head>
         <title>Memory Cards</title>
@@ -82,5 +84,6 @@ export default function _App(props: AppProps) {
         </NotificationsProvider>
       </MantineProvider>
     </RecoilRoot>
+    </NoSSR>
   );
 }

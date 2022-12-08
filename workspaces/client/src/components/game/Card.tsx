@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { CardStateDefinition } from '@memory-cards/shared/common/types';
-import { CardsMap } from '@icons/cards/CardsMap';
+import { CardsMap } from '@icons/new-cards/CardsMap';
 
 type Props = {
   card: CardStateDefinition;
@@ -15,6 +15,8 @@ export default function Card({card, cardIndex, onRevealCard, clientId}: Props) {
   if (card.owner) {
     cardBg = card.owner === clientId ? 'bg-blue-300/50' : 'bg-red-300/50';
   }
+
+  console.log(card)
 
   return (
     <div

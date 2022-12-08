@@ -1,22 +1,22 @@
-import { ServerEvents } from './ServerEvents';
-import { CardStateDefinition } from '../common/types';
+import { ServerEvents } from "./ServerEvents";
+import { CardInstance, Player } from "../common/types";
 
 export type ServerPayloads = {
   [ServerEvents.LobbyState]: {
     lobbyId: string;
-    mode: 'solo' | 'duo';
-    delayBetweenRounds: number;
+    mode: "solo" | "duo";
+    players: Array<Player>;
+    playerTimer: number;
     hasStarted: boolean;
     hasFinished: boolean;
     currentRound: number;
     playersCount: number;
-    cards: CardStateDefinition[];
+    cards: CardInstance[];
     isSuspended: boolean;
-    scores: Record<string, number>;
   };
 
   [ServerEvents.GameMessage]: {
     message: string;
-    color?: 'green' | 'red' | 'blue' | 'orange';
+    color?: "green" | "red" | "blue" | "orange";
   };
 };

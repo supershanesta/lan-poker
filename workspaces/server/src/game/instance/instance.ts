@@ -8,34 +8,32 @@ import { SECOND } from '@app/game/constants';
 import { Socket } from 'socket.io';
 import { ServerPayloads } from '@shared/server/ServerPayloads';
 import { ServerEvents } from '@shared/server/ServerEvents';
+import { Player } from '@app/../../shared/common/types';
 
-export class Instance
-{
-  public hasStarted: boolean = false;
+export class Instance {
+  public hasStarted = false;
 
-  public hasFinished: boolean = false;
+  public hasFinished = false;
 
-  public isSuspended: boolean = false;
+  public isSuspended = false;
 
-  public currentRound: number = 1;
+  public currentRound = 1;
 
   public cards: CardState[] = [];
 
   public scores: Record<Socket['id'], number> = {};
 
-  public delayBetweenRounds: number = 2;
+  public playerTimer = 30;
+
+  public players: Array<Player> = [];
 
   private cardsRevealedForCurrentRound: Record<number, Socket['id']> = {};
 
-  constructor(
-    private readonly lobby: Lobby,
-  )
-  {
+  constructor(private readonly lobby: Lobby) {
     this.initializeCards();
   }
 
-  public triggerStart(): void
-  {
+  public triggerStart(): void {
     if (this.hasStarted) {
       return;
     }
@@ -48,8 +46,7 @@ export class Instance
     });
   }
 
-  public triggerFinish(): void
-  {
+  public triggerFinish(): void {
     if (this.hasFinished || !this.hasStarted) {
       return;
     }
@@ -62,8 +59,7 @@ export class Instance
     });
   }
 
-  public revealCard(cardIndex: number, client: AuthenticatedSocket): void
-  {
+  public revealCard(cardIndex: number, client: AuthenticatedSocket): void {
     if (this.isSuspended || this.hasFinished || !this.hasStarted) {
       return;
     }
@@ -118,14 +114,13 @@ export class Instance
     }
 
     if (everyonePlayed || everyCardRevealed) {
-      this.transitionToNextRound();
+      this.transitionToNextRound(client);
     }
 
     this.lobby.dispatchLobbyState();
   }
 
-  private transitionToNextRound(): void
-  {
+  private transitionToNextRound(client): void {
     this.isSuspended = true;
 
     setTimeout(() => {
@@ -177,13 +172,12 @@ export class Instance
       }
 
       this.lobby.dispatchLobbyState();
-    }, SECOND * this.delayBetweenRounds);
+    }, SECOND * this.playerTimer);
   }
 
-  private initializeCards(): void
-  {
+  private initializeCards(): void {
     // Get only values, not identifiers
-    const cards = Object.values(Cards).filter(c => Number.isInteger(c)) as Cards[];
+    const cards = Object.values(Cards).filter((c) => Number.isInteger(c)) as Cards[];
 
     // Push two time the card into the list, so it makes a pair
     for (const card of cards) {

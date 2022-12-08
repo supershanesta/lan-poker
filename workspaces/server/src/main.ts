@@ -3,8 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { GameIoAdapter } from '@app/websocket/game-io.adapter';
 import { AppModule } from '@app/app.module';
 
-async function bootstrap()
-{
+async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useWebSocketAdapter(new GameIoAdapter(app));
@@ -19,7 +18,7 @@ async function bootstrap()
   app.setGlobalPrefix('api');
   app.enableShutdownHooks();
 
-  await app.listen(3000);
+  await app.listen(4100);
 }
 
 bootstrap();
