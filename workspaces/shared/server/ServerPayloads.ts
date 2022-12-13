@@ -1,5 +1,5 @@
 import { ServerEvents } from "./ServerEvents";
-import { CardInstance, Player } from "../common/types";
+import { CardInstance, Player, CurrentPhase } from "../common/types";
 
 export type ServerPayloads = {
   [ServerEvents.LobbyState]: {
@@ -9,7 +9,7 @@ export type ServerPayloads = {
     playerTimer: number;
     hasStarted: boolean;
     hasFinished: boolean;
-    currentRound: number;
+    phase: CurrentPhase; 
     playersCount: number;
     cards: CardInstance[];
     isSuspended: boolean;

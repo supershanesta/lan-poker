@@ -1,4 +1,4 @@
-import { useLobbyContext } from "@hooks/useGameContext";
+import { useLobbyContext } from "@hooks/useLobbyContext";
 import { ClientEvents } from "@memory-cards/shared/client/ClientEvents";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";

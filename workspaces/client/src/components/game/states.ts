@@ -9,11 +9,10 @@ const { persistAtom } = recoilPersist()
 export const CurrentLobbyState = atom<ServerPayloads[ServerEvents.LobbyState] | null>({
   key: 'CurrentLobbyState',
   default: null,
-  effects_UNSTABLE: [persistAtom],
 });
 
 export const CurrentMeState = atom<Player>({
   key: 'player',
-  default: { id: Date.now(), turn: false, socketId: null, lobbyId: null, name: null, balance: null, active: false },
+  default: { id: Date.now(), turn: false, admin: false, socketId: null, lobbyId: null, name: null, balance: null, active: false },
   effects_UNSTABLE: [persistAtom],
 });

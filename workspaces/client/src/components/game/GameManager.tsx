@@ -1,4 +1,4 @@
-import { useLobbyContext } from '@hooks/useGameContext';
+import { useLobbyContext } from '@hooks/useLobbyContext';
 import { useEffect } from 'react';
 import { Listener } from '@components/websocket/types';
 import { ServerEvents } from '@memory-cards/shared/server/ServerEvents';
@@ -11,14 +11,13 @@ import JoinGame from './JoinGame';
 
 export default function GameManager() {
   const router = useRouter();
-  const {sm, me, setMeState, clientId, lobbyState, setLobbyState } = useLobbyContext();
+  const {sm, me, lobbyState, setLobbyState } = useLobbyContext();
 
-  console.log('DATA', me, lobbyState, clientId);
+  console.log(lobbyState);
+
 
   useEffect(() => {
     sm.connect(me?.id || 0);
-
-    console.log('Checking for lobby state change')
 
     const onLobbyState: Listener<ServerPayloads[ServerEvents.LobbyState]> = async (data) => {
       setLobbyState(data);
@@ -46,7 +45,7 @@ export default function GameManager() {
       sm.removeListener(ServerEvents.LobbyState, onLobbyState);
       sm.removeListener(ServerEvents.GameMessage, onGameMessage);
     };
-  }, [router, setLobbyState, sm]);
+  }, [me?.id, router, setLobbyState, sm]);
 
   if (lobbyState === null) {
     return <Introduction/>;

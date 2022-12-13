@@ -11,12 +11,60 @@ export type CardInstance = {
   owner: number | null;
 };
 
+export enum Actions {
+  bet = 'bet',
+  check = 'check',
+  fold = 'fold',
+  call = 'call',
+}
+
+export enum Phase {
+  preflop = 'preflop',
+  flop = 'flop',
+  turn = 'turn',
+  river = 'river'
+}
+
+export enum phaseOrder {
+  preflop,
+  flop,
+  turn,
+  river,
+}
+
+export enum phaseCards {
+  preflop = 0,
+  flop = 3,
+  turn = 1,
+  river = 1
+}
+
+export type PlayerAction = {
+  action: Actions
+  bet: number
+}
+
+export type PlayerBets = {
+  phase: number
+  total: number
+}
+
 export type Player = {
   id: number
-  turn: boolean
   socketId: string | null
   lobbyId: string | null
+  turn: boolean
   name: string | null
-  balance: number | null
+  balance: number
+  action?: PlayerAction | null
+  bets: PlayerBets
   active: boolean
+  admin: boolean
+}
+
+export type CurrentPhase = {
+  phase: Phase
+  phaseNumber: phaseOrder
+  currentPhaseBet: number
+  pot: number
 }

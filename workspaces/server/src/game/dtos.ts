@@ -1,5 +1,6 @@
 import { IsInt, IsNumber, IsString, Max, Min } from 'class-validator';
 import { Cards } from '@shared/common/Cards';
+import { Actions } from '@shared/common/types';
 
 export class LobbyCreateDto {
   @IsString()
@@ -12,6 +13,9 @@ export class LobbyCreateDto {
 
   @IsString()
   username: string;
+
+  @IsInt()
+  startingBalance: number;
 }
 
 export class LobbyJoinDto {
@@ -20,6 +24,14 @@ export class LobbyJoinDto {
 
   @IsString()
   userName: string;
+}
+
+export class PlayerActionDto {
+  @IsString()
+  action: Actions;
+
+  @IsNumber()
+  bet: number;
 }
 
 export class RevealCardDto {

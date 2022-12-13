@@ -1,15 +1,16 @@
-import { useLobbyContext } from "@hooks/useGameContext";
+import { useLobbyContext } from "@hooks/useLobbyContext";
 import { ClientEvents } from "@memory-cards/shared/client/ClientEvents";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { emitEvent } from "@utils/analytics";
-import { Divider, Select, TextInput } from "@mantine/core";
+import { Divider, Select, TextInput, NumberInput } from "@mantine/core";
 
 export default function Introduction() {
   const router = useRouter();
   const { sm, clientId, setMeState } = useLobbyContext();
   const [playerTimer, setPlayerTimer] = useState<number>(30);
   const [userName, setUsername] = useState<string>("");
+  const [startingBalance, setStartingBalance] = useState<number>(1000);
 
   const onJoinLobby = () => {
     sm.emit({
@@ -28,9 +29,10 @@ export default function Introduction() {
         username: userName,
         mode: mode,
         playerTimer: playerTimer,
+        startingBalance: startingBalance,
       },
     });
-    setMeState((prev) => ({ ...prev, socketId: clientId, name: userName, balance: null, active: false, lobbyId: null }))
+    setMeState((prev) => ({ ...prev, socketId: clientId, name: userName, balance: 0, active: false, lobbyId: null }))
     emitEvent("lobby_create");
   };
 
@@ -54,6 +56,7 @@ export default function Introduction() {
       <Divider my="md" />
 
       {!router.query.lobby && (
+        <>
         <div>
         <h3 className="text-xl">Game options</h3>
 
@@ -69,6 +72,14 @@ export default function Introduction() {
           ]}
         />
       </div>
+      
+      <div>
+        <h3 className="text-xl">Starting Balance</h3>
+        <NumberInput
+          onChange={(event) => setStartingBalance(event || 0)}
+        />
+      </div>
+      </>
       )}
 
       <div>

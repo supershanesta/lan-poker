@@ -1,4 +1,4 @@
-import { Cards } from '@shared/common/Cards';
+/*import { Cards } from '@shared/common/Cards';
 import { Lobby } from '@app/game/lobby/lobby';
 import { CardState } from '@app/game/instance/card-state';
 import { ServerException } from '@app/game/server.exception';
@@ -192,3 +192,4 @@ export class Instance {
     this.cards = this.cards.sort((a, b) => 0.5 - Math.random());
   }
 }
+*/

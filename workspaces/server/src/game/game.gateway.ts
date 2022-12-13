@@ -15,7 +15,7 @@ import { AuthenticatedSocket } from '@app/game/types';
 import { ServerException } from '@app/game/server.exception';
 import { SocketExceptions } from '@shared/server/SocketExceptions';
 import { ServerPayloads } from '@shared/server/ServerPayloads';
-import { LobbyCreateDto, LobbyJoinDto, RevealCardDto } from '@app/game/dtos';
+import { LobbyCreateDto, LobbyJoinDto, PlayerActionDto, RevealCardDto } from '@app/game/dtos';
 import { WsValidationPipe } from '@app/websocket/ws.validation-pipe';
 
 @UsePipes(new WsValidationPipe())
@@ -52,7 +52,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   @SubscribeMessage(ClientEvents.LobbyCreate)
   onLobbyCreate(client: AuthenticatedSocket, data: LobbyCreateDto): WsResponse<ServerPayloads[ServerEvents.GameMessage]> {
-    const lobby = this.lobbyManager.createLobby(data.mode, data.playerTimer);
+    const lobby = this.lobbyManager.createLobby(data.mode, data.playerTimer, data.startingBalance);
     lobby.addClient(client, data.username);
 
     return {
@@ -71,7 +71,33 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   @SubscribeMessage(ClientEvents.LobbyLeave)
   onLobbyLeave(client: AuthenticatedSocket): void {
+    console.log('Am I here?');
+    console.log(client.data.lobby);
     client.data.lobby?.removeClient(client);
+  }
+
+  @SubscribeMessage(ClientEvents.LobbyStart)
+  onStart(client: AuthenticatedSocket): void {
+    if (!client.data.lobby) {
+      throw new ServerException(SocketExceptions.LobbyError, 'You are not in a lobby');
+    }
+    if (!client.data.me?.state.admin) {
+      throw new ServerException(SocketExceptions.LobbyError, 'You are not the admin');
+    }
+    client.data.lobby.instance.triggerStart();
+    client.data.lobby.dispatchLobbyState();
+  }
+
+  @SubscribeMessage(ClientEvents.PlayerAction)
+  onPlayerAction(client: AuthenticatedSocket, data: PlayerActionDto): void {
+    if (!client.data.lobby) {
+      throw new ServerException(SocketExceptions.LobbyError, 'You are not in a lobby');
+    }
+    if (!client.data.me?.state.turn) {
+      throw new ServerException(SocketExceptions.LobbyError, 'It is not your turn');
+    }
+    client.data.lobby.instance.playerAction(client.data.me, data.action, data.bet);
+    client.data.lobby.dispatchLobbyState();
   }
 
   @SubscribeMessage(ClientEvents.GameRevealCard)

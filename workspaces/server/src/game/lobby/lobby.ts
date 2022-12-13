@@ -4,6 +4,7 @@ import { ServerEvents } from '@shared/server/ServerEvents';
 import { AuthenticatedSocket } from '@app/game/types';
 import { Instance } from '@app/game/instance/instancePoker';
 import { ServerPayloads } from '@shared/server/ServerPayloads';
+import { Player } from '../instance/player';
 
 export class Lobby {
   public readonly id: string = v4();
@@ -14,42 +15,43 @@ export class Lobby {
 
   public readonly instance: Instance = new Instance(this);
 
-  constructor(private readonly server: Server, public readonly maxClients: number) {}
+  constructor(private readonly server: Server, public readonly maxClients: number, public readonly startingBalance: number) {}
 
   public addClient(client: AuthenticatedSocket, userName: string): void {
     const playerId = typeof client.handshake.query.id == 'string' ? parseInt(client.handshake.query.id) : 0;
     this.clients.set(client.id, client);
     client.join(this.id);
     client.data.lobby = this;
-
-    console.log('ADD CLIENT:', playerId, this.id);
-    this.instance.players.push({
+    const player = {
       id: playerId,
       turn: false,
       socketId: client.id,
       lobbyId: client.data.lobby.id,
       name: userName,
-      balance: null,
+      balance: this.startingBalance,
+      bets: {
+        phase: 0,
+        total: 0,
+      },
       active: false,
-    });
-    if (this.clients.size >= this.maxClients) {
-      this.instance.triggerStart();
-    }
+      admin: this.instance.players.length() ? false : true,
+    };
+    client.data.me = new Player(player);
+    this.instance.players.addPlayer(client.data.me);
 
     this.dispatchLobbyState();
   }
 
-  public rejoinClient(client: AuthenticatedSocket, id: number): void {
-    const idx = this.instance.players.findIndex((player) => player.id == id);
-    if (idx >= 0) {
-      console.log('Found player by Id!');
-      this.clients.delete(this.instance.players[idx].socketId || '');
+  public rejoinClient(client: AuthenticatedSocket): void {
+    const playerId = typeof client.handshake.query.id == 'string' ? parseInt(client.handshake.query.id) : null;
+    const player = this.instance.players.getPlayer(playerId || 0);
+    if (player) {
+      this.clients.delete(player.state.socketId || '');
       this.clients.set(client.id, client);
       client.join(this.id);
       client.data.lobby = this;
-      this.instance.players[idx].socketId = client.id;
-      console.log('Players are now:', this.instance.players);
-      console.log(this.clients.size, this.maxClients);
+      player.updatePlayerSocket(client.id);
+      client.data.me = player;
       if (this.clients.size >= this.maxClients) {
         this.instance.triggerStart();
       }
@@ -83,10 +85,10 @@ export class Lobby {
       lobbyId: this.id,
       mode: this.maxClients === 1 ? 'solo' : 'duo',
       playerTimer: this.instance.playerTimer,
-      players: this.instance.players,
+      players: this.instance.players.returnDispatch(),
       hasStarted: this.instance.hasStarted,
       hasFinished: this.instance.hasFinished,
-      currentRound: this.instance.currentRound,
+      phase: this.instance.phase.state,
       playersCount: this.clients.size,
       cards: this.instance.deck.cards.map((card) => card.toDefinition()),
       isSuspended: this.instance.isSuspended,

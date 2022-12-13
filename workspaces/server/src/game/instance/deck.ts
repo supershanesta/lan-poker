@@ -1,6 +1,6 @@
 import { Suites, standardCards } from '@shared/common/Deck';
 import { CardState } from '@app/game/instance/card';
-import { Player } from '@app/../../shared/common/types';
+import { Player } from './player';
 
 export class Deck {
   public cards: CardState[] = [];
@@ -14,7 +14,7 @@ export class Deck {
     const cards: CardState[] = [];
     players.forEach((player) => {
       for (let i = 0; i < qty; i++) {
-        this.cards[this.top + i].ownerId = player.id;
+        this.cards[this.top + i].ownerId = player.state.id;
         this.cards[this.top + i].isRevealed = true;
         cards.push(this.cards[this.top + i]);
       }
