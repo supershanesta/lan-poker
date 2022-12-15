@@ -4,6 +4,7 @@ import { CurrentPhase, Player as PlayerType } from '@app/../../shared/common/typ
 export class Players {
   public players: Player[] = [];
   public rotations = 0;
+  public start = 0;
 
   public addPlayer(player: Player): void {
     if (this.players.length) {
@@ -68,6 +69,37 @@ export class Players {
       p.state.bets.phase = 0;
       p.state.action = null;
       p.state.turn = false;
+    });
+    this.rotations = 0;
+  }
+
+  public reset(): void {
+    this.players.forEach((p) => {
+      p.state.bets.phase = 0;
+      p.state.bets.total = 0;
+      p.state.action = null;
+      p.state.turn = false;
+      p.state.active = p.state.balance > 0 ? true : false;
+      p.state.won = undefined;
+    });
+    this.rotations = 0;
+  }
+
+  public offset(): void {
+    const lastFirst = this.players.shift();
+    if (lastFirst) {
+      this.players.push(lastFirst);
+    }
+    this.setNextPlayers();
+  }
+
+  private setNextPlayers() {
+    this.players.forEach((player, idx) => {
+      if (idx === this.players.length - 1) {
+        player.removeNextPlayer();
+      } else {
+        player.setNextPlayer(this.players[idx + 1]);
+      }
     });
   }
 }

@@ -16,4 +16,10 @@ export class CardState {
       owner: this.ownerId,
     };
   }
+
+  public reset(): void {
+    this.isLocked = false;
+    this.isRevealed = false;
+    this.ownerId = null;
+  }
 }

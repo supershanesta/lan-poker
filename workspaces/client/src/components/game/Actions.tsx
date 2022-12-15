@@ -26,15 +26,15 @@ export default function Actions() {
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 pb-5">
       <Divider my="md" />
       <div className="flex flex-row relative select-none w-100 justify-center gap-4">
-        {me.admin && !lobbyState?.hasStarted && (
+        {me.admin && (!lobbyState?.hasStarted || lobbyState?.hasFinished) && (
            <button className="btn-neutral z-[1000]" onClick={onStart}>
            Start
          </button>
         )}
-        {me.turn && (
+        {me.turn && !lobbyState?.hasFinished && (
           <div>
           <div>
             <Slider
@@ -48,7 +48,7 @@ export default function Actions() {
               max={me.balance || 0}
             />
           </div>
-        <>
+        <div className="flex gap-3">
           {!actionData.mustBet && (
             <button className="btn-neutral"  onClick={() => onAction(ActionType.check)}>
               Check
@@ -62,10 +62,17 @@ export default function Actions() {
               Call
             </button>
           )}
+          {actionData.mustBet && (
+            <button className="btn" onClick={() => onAction(ActionType.raise)}>
+                Raise
+            </button>
+           )}
+           {!actionData.mustBet && (
           <button className="btn" onClick={() => onAction(ActionType.bet)}>
             Bet
           </button>
-        </>
+          )}
+        </div>
         </div>
         )}
         </div>

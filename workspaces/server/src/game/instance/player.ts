@@ -1,8 +1,9 @@
 import { Player as PlayerType, PlayerAction, Actions } from '@app/../../shared/common/types';
+import { Phase } from './phase';
 
 export class Player {
   public state: PlayerType;
-  private nextPlayer: Player;
+  private nextPlayer: Player | null;
 
   constructor(player: PlayerType) {
     this.state = player;
@@ -10,6 +11,10 @@ export class Player {
 
   public setNextPlayer(player: Player) {
     this.nextPlayer = player;
+  }
+
+  public removeNextPlayer() {
+    this.nextPlayer = null;
   }
 
   public getNextPlayer() {
@@ -40,11 +45,19 @@ export class Player {
 
   public setAction(action: PlayerAction): void {
     this.state.action = action;
-    if (action.action === Actions.call || action.action === Actions.bet) {
+    if (action.action === Actions.call || action.action === Actions.bet || action.action === Actions.raise) {
       this.addBet(action.bet);
     }
     if (action.action === Actions.fold) {
       this.state.active = false;
     }
+  }
+
+  public setWon(description: string): void {
+    this.state.won = { won: true, description };
+  }
+
+  public addBalance(amt: number): void {
+    this.state.balance += amt;
   }
 }

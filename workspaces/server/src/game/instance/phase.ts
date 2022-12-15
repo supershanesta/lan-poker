@@ -21,14 +21,21 @@ export class Phase {
     return phaseCards[this.state.phase];
   }
 
-  public setBet(player: Player): void {
-    if (player.state.action?.action === Actions.bet) {
-      this.state.currentPhaseBet = player.state.action?.bet;
-      this.setPot(this.state.currentPhaseBet);
-    }
+  public setBet(bet, phaseBet, action: Actions): void {
+    this.state.currentPhaseBet = bet + phaseBet;
+    this.setPot(bet);
   }
 
   private setPot(bet: number): void {
     this.state.pot += bet;
+  }
+
+  public reset(): void {
+    this.state = {
+      phase: PhaseType[phaseOrder[0]],
+      phaseNumber: 0,
+      currentPhaseBet: 0,
+      pot: 0,
+    };
   }
 }

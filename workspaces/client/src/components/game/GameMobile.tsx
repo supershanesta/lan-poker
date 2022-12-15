@@ -8,34 +8,21 @@ import { emitEvent } from '@utils/analytics';
 import { useRouter } from 'next/router';
 import Actions from './Actions';
 import Table from './Table';
+import Board from './Board';
+import PlayersMobile from './PlayersMobile';
 
-export default function Game() {
+export default function GameMobile() {
   const router = useRouter();
   const {sm, lobbyState, me, resetMe} = useLobbyContext();
 
 
-/*  const onReplay = () => {
-    sm.emit({
-      event: ClientEvents.LobbyCreate,
-      data: {
-        mode: lobbyState?.mode,
-        delayBetweenRounds: lobbyState?.delayBetweenRounds,
-      },
-    });
-
-    emitEvent('lobby_create');
-  };
-
-*/
-
   const copyLobbyLink = async () => {
-    const link = `${window.location.origin}?lobby=${lobbyState?.lobbyId}`;
-    await navigator.clipboard.writeText(link);
-
-    showNotification({
-      message: 'Link copied to clipboard!',
-      color: 'green',
-    });
+    try {
+      await navigator.share({ title: 'Join my Poker Lobby!', url: '' });
+      console.log("Data was shared successfully");
+    } catch (err) {
+      console.error("Share failed:", err);
+    }
   };
 
   const leaveLobby = async () => {
@@ -53,15 +40,6 @@ export default function Game() {
   return (
     <div>
       <div className="flex justify-between items-center my-5">
-        <Badge size="xl">{me?.name}</Badge>
-        <Badge variant="outline">
-          {!lobbyState?.hasStarted
-            ? (<span>Waiting for opponent...</span>)
-            : (<span>Round {lobbyState.hasFinished}</span>)
-          }
-        </Badge>
-
-        {lobbyState?.mode === 'duo' && <Badge size="xl" color="red">Opponent score</Badge>}
         <div className="text-center mt-5">
           <button className="btn-warning" onClick={leaveLobby}>Leave Lobby</button>
         </div>
@@ -72,8 +50,11 @@ export default function Game() {
           Next round starting soon, remember cards !
         </div>
       )}
-
-      <Table/>
+      <div className="text-center text-lg">
+          Pot: ${(lobbyState?.pot || 0) + (lobbyState?.phase.pot || 0)}
+      </div>
+      <Board/>
+      <PlayersMobile/>
       <Actions/>
       <div className="flex flex-row relative select-none w-100 justify-center gap-4">
       {lobbyState?.hasFinished && <Overlay opacity={0.6} color="#000" blur={2} zIndex={5}/>}

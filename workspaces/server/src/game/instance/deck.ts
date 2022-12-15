@@ -40,4 +40,19 @@ export class Deck {
     // Shuffle array randomly
     this.cards = this.cards.sort((a, b) => 0.5 - Math.random());
   }
+
+  public getPublicCards(): CardState[] {
+    return this.cards.filter((c) => c.ownerId === 0);
+  }
+
+  public getPlayerCards(id: number): CardState[] {
+    return this.cards.filter((c) => c.ownerId === id);
+  }
+
+  public reset(): void {
+    this.top = 0;
+    this.cards.forEach((card, i) => {
+      this.cards[i].reset();
+    });
+  }
 }

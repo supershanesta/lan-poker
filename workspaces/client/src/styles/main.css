@@ -13,3 +13,55 @@
 .btn-neutral {
   @apply bg-lime-400 text-white px-3 py-2 font-bold;
 }
+
+.player {
+  @apply grid grid-cols-1 gap-1 bg-slate-800 w-20 h-20 lg:w-32 lg:h-32 rounded-lg p-2;
+}
+
+.my-player {
+  @apply bg-slate-800 w-24 h-24 lg:w-40 lg:h-40 place-self-center rounded-lg p-2;
+}
+
+.player-turn {
+  @apply border-solid border-2 border-indigo-600;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.winner {
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+.winner::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background-color: #399953;
+  background-repeat: no-repeat;
+  background-size: 50% 50%, 50% 50%;
+  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+  background-image: linear-gradient(#399953, #399953),
+    linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33),
+    linear-gradient(#377af5, #377af5);
+  animation: rotate 4s linear infinite;
+}
+.winner::after {
+  @apply bg-slate-800;
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 6px;
+  top: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  border-radius: 5px;
+}

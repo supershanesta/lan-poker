@@ -9,6 +9,7 @@ import { useCallback } from "react";
 export default function Table() {
 
   const { lobbyState, me, myIndex } = useLobbyContext();
+  console.log(lobbyState);
 
   
 

@@ -5,11 +5,10 @@ import { CardsMap } from '@icons/new-cards/CardsMap';
 type Props = {
   card: CardInstance;
   cardIndex: number | null;
-  onRevealCard: (cardIndex: number) => void;
   clientId: number;
 };
 
-export default function Card({card, cardIndex, onRevealCard, clientId}: Props) {
+export default function Card({card, cardIndex, clientId}: Props) {
   let cardBg = 'bg-white/10';
 
   if (card.owner) {
@@ -20,7 +19,7 @@ export default function Card({card, cardIndex, onRevealCard, clientId}: Props) {
 
   return (
     <div
-      className={`transition py-3 flex ${cardBg}`}
+      className={`transition flex ${cardBg}`}
     >
       <Image
         src={CardsMap(card.card)}

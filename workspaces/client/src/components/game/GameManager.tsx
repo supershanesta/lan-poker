@@ -1,4 +1,5 @@
 import { useLobbyContext } from '@hooks/useLobbyContext';
+import {isMobile} from 'react-device-detect';
 import { useEffect } from 'react';
 import { Listener } from '@components/websocket/types';
 import { ServerEvents } from '@memory-cards/shared/server/ServerEvents';
@@ -8,6 +9,7 @@ import Game from '@components/game/Game';
 import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';
 import JoinGame from './JoinGame';
+import GameMobile from './GameMobile';
 
 export default function GameManager() {
   const router = useRouter();
@@ -53,6 +55,8 @@ export default function GameManager() {
   if (!me.lobbyId) {
     return <JoinGame/>;
   }
-
+  if (isMobile) {
+    return <GameMobile/>;
+  }
   return <Game/>;
 }

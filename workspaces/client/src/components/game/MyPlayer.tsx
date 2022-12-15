@@ -9,12 +9,14 @@ type props = {
 export default function MyPlayer({ player, className }: props) {
 
   return (
-    <div className="grid grid-cols-1">
-      <div className={`bg-slate-400 w-40 h-40 place-self-center ${className}`}>
+    <div className={`my-player ${player?.turn ? 'player-turn' : ''} ${className}`}>
+      <div>
         {player?.name}
-        {player?.balance}
       </div>
-      <Actions/>
+      <div>
+        ${player?.balance || 0}
+      </div>
+      <div>{player?.action?.action}</div>
     </div>
   );
 }

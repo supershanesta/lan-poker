@@ -16,6 +16,7 @@ export enum Actions {
   check = 'check',
   fold = 'fold',
   call = 'call',
+  raise = 'raise',
 }
 
 export enum Phase {
@@ -49,6 +50,11 @@ export type PlayerBets = {
   total: number
 }
 
+export type Winner = {
+  won: boolean,
+  description: string;
+}
+
 export type Player = {
   id: number
   socketId: string | null
@@ -57,6 +63,7 @@ export type Player = {
   name: string | null
   balance: number
   action?: PlayerAction | null
+  won?: Winner
   bets: PlayerBets
   active: boolean
   admin: boolean

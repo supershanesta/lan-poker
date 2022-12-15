@@ -99,13 +99,4 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     client.data.lobby.instance.playerAction(client.data.me, data.action, data.bet);
     client.data.lobby.dispatchLobbyState();
   }
-
-  @SubscribeMessage(ClientEvents.GameRevealCard)
-  onRevealCard(client: AuthenticatedSocket, data: RevealCardDto): void {
-    if (!client.data.lobby) {
-      throw new ServerException(SocketExceptions.LobbyError, 'You are not in a lobby');
-    }
-
-    //client.data.lobby.instance.revealCard(data.cardIndex, client);
-  }
 }

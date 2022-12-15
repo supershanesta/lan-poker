@@ -9,7 +9,4 @@ export enum ClientEvents
   LobbyLeave = 'client.lobby.leave',
   LobbyStart = 'client.lobby.start',
   PlayerAction = 'client.lobby.PlayerAction',
-
-  // Game
-  GameRevealCard = 'client.game.reveal_card',
 }

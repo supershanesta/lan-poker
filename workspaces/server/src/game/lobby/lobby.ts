@@ -92,6 +92,7 @@ export class Lobby {
       playersCount: this.clients.size,
       cards: this.instance.deck.cards.map((card) => card.toDefinition()),
       isSuspended: this.instance.isSuspended,
+      pot: this.instance.pot,
     };
 
     this.dispatchToLobby(ServerEvents.LobbyState, payload);
