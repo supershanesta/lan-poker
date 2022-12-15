@@ -35,45 +35,45 @@ export default function Actions() {
          </button>
         )}
         {me.turn && !lobbyState?.hasFinished && (
-          <div>
-          <div>
-            <Slider
-              size="xl"
-              radius="lg"
-              labelAlwaysOn
-              value={bet}
-              onChange={setBet}
-              step={5}
-              min={actionData.mustBet ? actionData.raiseAmount : 1}
-              max={me.balance || 0}
-            />
+          <div className="w-full">
+            <div>
+              <Slider
+                size="xl"
+                radius="lg"
+                labelAlwaysOn
+                value={bet}
+                onChange={setBet}
+                step={5}
+                min={actionData.mustBet ? actionData.raiseAmount : 5}
+                max={me.balance || 0}
+              />
+            </div>
+            <div className="flex gap-3 justify-center">
+              {!actionData.mustBet && (
+                <button className="btn-neutral"  onClick={() => onAction(ActionType.check)}>
+                  Check
+                </button>
+              )}
+              <button className="btn-warning" onClick={() => onAction(ActionType.fold)}>
+                Fold
+              </button>
+              {actionData.mustBet && (
+                <button className="btn" onClick={() => onAction(ActionType.call)}>
+                  Call
+                </button>
+              )}
+              {actionData.mustBet && (
+                <button className="btn" onClick={() => onAction(ActionType.raise)}>
+                    Raise
+                </button>
+              )}
+              {!actionData.mustBet && (
+              <button className="btn" onClick={() => onAction(ActionType.bet)}>
+                Bet
+              </button>
+              )}
+            </div>
           </div>
-        <div className="flex gap-3">
-          {!actionData.mustBet && (
-            <button className="btn-neutral"  onClick={() => onAction(ActionType.check)}>
-              Check
-            </button>
-          )}
-          <button className="btn-warning" onClick={() => onAction(ActionType.fold)}>
-            Fold
-          </button>
-          {actionData.mustBet && (
-            <button className="btn" onClick={() => onAction(ActionType.call)}>
-              Call
-            </button>
-          )}
-          {actionData.mustBet && (
-            <button className="btn" onClick={() => onAction(ActionType.raise)}>
-                Raise
-            </button>
-           )}
-           {!actionData.mustBet && (
-          <button className="btn" onClick={() => onAction(ActionType.bet)}>
-            Bet
-          </button>
-          )}
-        </div>
-        </div>
         )}
         </div>
     </div>

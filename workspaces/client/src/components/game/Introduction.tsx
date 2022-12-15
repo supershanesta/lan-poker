@@ -90,19 +90,18 @@ export default function Introduction() {
       </div>
 
       {!router.query.lobby && (
-        <div className="mt-5 text-center flex justify-between">
-          <button className="btn" onClick={() => onCreateLobby("solo")}>
-            Create solo lobby
-          </button>
+        <div className="mt-5 text-center flex justify-center">
           <button className="btn" onClick={() => onCreateLobby("duo")}>
-            Create duo lobby
+            Create lobby
           </button>
         </div>
       )}
       {router.query.lobby && (
-        <button className="btn" onClick={() => onJoinLobby()}>
-          Join Lobby
-        </button>
+        <div className="mt-5 text-center flex justify-center">
+          <button className="btn" onClick={() => onJoinLobby()}>
+            Join Lobby
+          </button>
+        </div>
       )}
     </div>
   );
