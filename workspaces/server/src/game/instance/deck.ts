@@ -54,5 +54,6 @@ export class Deck {
     this.cards.forEach((card, i) => {
       this.cards[i].reset();
     });
+    this.cards = this.cards.sort((a, b) => 0.5 - Math.random());
   }
 }

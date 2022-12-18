@@ -3,12 +3,7 @@ import { CardInstance } from '@shared/common/types';
 import { Player } from '@shared/common/types';
 
 export class CardState {
-  constructor(
-    public readonly card: CardType,
-    public isRevealed: boolean = false,
-    public isLocked: boolean = false,
-    public ownerId: Player['id'] | null = null,
-  ) {}
+  constructor(public readonly card: CardType, public isRevealed: boolean = false, public ownerId: Player['id'] | null = null) {}
 
   public toDefinition(): CardInstance {
     return {
@@ -18,7 +13,6 @@ export class CardState {
   }
 
   public reset(): void {
-    this.isLocked = false;
     this.isRevealed = false;
     this.ownerId = null;
   }

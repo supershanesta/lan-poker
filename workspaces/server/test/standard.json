@@ -1,0 +1,13 @@
+{
+  "moduleFileExtensions": ["js", "ts"],
+  "rootDir": "../src",
+  "roots": ["../tests/"],
+  "testEnvironment": "node",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@app/(.*)$": "<rootDir>/$1",
+    "^@shared/(.*)$": "<rootDir>/../../shared/$1"
+  }
+}
