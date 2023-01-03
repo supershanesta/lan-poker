@@ -1,19 +1,8 @@
-import { ClientEvents } from '@memory-cards/shared/client/ClientEvents';
-import { emitEvent } from '@utils/analytics';
 import { useLobbyContext } from '@hooks/useLobbyContext';
 import Card from './Card';
 
 export default function Table() {
     const { lobbyState, me, sm } = useLobbyContext();
-
-    const onRevealCard = (cardIndex: number) => {
-        sm.emit({
-          event: ClientEvents.GameRevealCard,
-          data: {cardIndex},
-        });
-    
-        emitEvent('card_revealed');
-      };
 
 
     return (
@@ -25,7 +14,6 @@ export default function Table() {
             <Card
               card={{ card: null, owner: null }}
               cardIndex={-1}
-              onRevealCard={onRevealCard}
               clientId={me.id}
             />
           </div>
@@ -37,7 +25,6 @@ export default function Table() {
             <Card
               card={card}
               cardIndex={i}
-              onRevealCard={onRevealCard}
               clientId={me.id}
             />
           </div>
