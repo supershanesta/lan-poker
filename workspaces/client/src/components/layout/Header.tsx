@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import { Cards } from '@icons/cards';
 import Link from 'next/link';
 
 export default function Header() {
@@ -15,15 +13,6 @@ export default function Header() {
         <a onClick={clearGame}>
           <h1 className="text-4xl font-bold flex space-x-2">
             <span>Memory Cards</span>
-            <div>
-              <Image
-                src={Cards}
-                alt="playing cards"
-                className="ml-2"
-                width={42}
-                height={42}
-              />
-            </div>
           </h1>
         </a>
       </Link>
