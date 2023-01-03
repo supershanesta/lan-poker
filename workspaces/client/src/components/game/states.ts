@@ -13,6 +13,6 @@ export const CurrentLobbyState = atom<ServerPayloads[ServerEvents.LobbyState] | 
 
 export const CurrentMeState = atom<Player>({
   key: 'player',
-  default: { id: Date.now(), turn: false, admin: false, socketId: null, lobbyId: null, name: null, balance: null, active: false },
+  default: { id: Date.now(), turn: false, admin: false, socketId: null, lobbyId: null, name: null, balance: 0, active: false, bets: { phase: 0, total: 0 } },
   effects_UNSTABLE: [persistAtom],
 });
