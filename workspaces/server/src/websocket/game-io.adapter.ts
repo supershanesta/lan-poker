@@ -12,7 +12,6 @@ export class GameIoAdapter extends IoAdapter {
     transports: ['websocket'],
     serveClient: false,
     maxSocketListeners: 35,
-    namespace: 'wsapi',
   };
 
   createIOServer(port: number, options?: ServerOptions): any {
