@@ -7,10 +7,13 @@ COPY ./yarn.lock ./
 COPY ./workspaces/client ./workspaces/client
 COPY ./workspaces/shared ./workspaces/shared
 
-RUN yarn install --production\
-    && yarn build:prod:client
+WORKDIR /home/workspaces/client 
+
+RUN yarn install --frozen-lockfile
+RUN yarn build:prod
+
 RUN rm -rf node_modules \
-    && yarn install  --prefer-offline \
+    && yarn install  --prefer-offline --production\
     && yarn cache clean --all
 
 CMD ["yarn", "start:prod:client"]
