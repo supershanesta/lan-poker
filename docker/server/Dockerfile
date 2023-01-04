@@ -9,4 +9,4 @@ COPY ./workspaces/shared ./workspaces/shared
 
 RUN yarn install
 
-CMD ["yarn", "start:prod:server"]
+#CMD ["yarn", "start:prod:server"]
