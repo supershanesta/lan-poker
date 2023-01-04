@@ -8,7 +8,7 @@ COPY ./workspaces/client ./workspaces/client
 COPY ./workspaces/shared ./workspaces/shared
 
 RUN yarn install --frozen-lockfile \
-    && yarn build \
+    && yarn next build \
     && rm -rf node_modules \
     && yarn install --production --prefer-offline \
     && yarn cache clean --all

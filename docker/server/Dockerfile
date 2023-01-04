@@ -7,6 +7,9 @@ COPY ./yarn.lock ./
 COPY ./workspaces/server ./workspaces/server
 COPY ./workspaces/shared ./workspaces/shared
 
-RUN yarn install
+RUN yarn install --frozen-lockfile \
+    && rm -rf node_modules \
+    && yarn install --production --prefer-offline \
+    && yarn cache clean --all
 
-#CMD ["yarn", "start:prod:server"]
+CMD ["yarn", "start:prod:server"]
