@@ -8,6 +8,7 @@ export class GameIoAdapter extends IoAdapter {
     cors: {
       origin: process.env.CORS_ALLOW_ORIGIN,
     },
+    path: process.env.SOCKET_PATH,
     transports: ['websocket'],
     serveClient: false,
     maxSocketListeners: 35,
