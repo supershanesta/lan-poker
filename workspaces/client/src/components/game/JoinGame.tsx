@@ -22,19 +22,10 @@ export default function JoinGame() {
 
   return (
     <div className="mt-4">
-      <h2 className="text-2xl">Hello ! 👋</h2>
+      <h2 className="text-2xl">Are you ready to beat your friends 👋</h2>
 
       <p className="mt-3 text-lg">
-        Welcome to a simple game to test your memory against other players or
-        yourself (solo mode).
-        <br />
-        Reveal cards by clicking on them, you can reveal two card per round,
-        your opponent too.
-        <br />
-        Once you revealed cards, if they match then you gain a point.
-        You&apos;ll also see the cards revealed by your opponent.
-        <br />
-        Game is over once all cards are revealed. Player with most points wins!
+        A simple online poker game that allows you and your friends to create your own lobby, set your own rules, and destory your friendships with banter and trickery.
       </p>
 
       <Divider my="md" />
