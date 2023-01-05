@@ -39,14 +39,15 @@ export default function Game() {
   };
 
   const leaveLobby = async () => {
+    sm.emit({
+      event: ClientEvents.LobbyLeave,
+    });
     resetMe();
     await router.push({
       pathname: '/',
       query: {},
     }, undefined, {});
-    sm.emit({
-      event: ClientEvents.LobbyLeave,
-    });
+    
     
   };
 
