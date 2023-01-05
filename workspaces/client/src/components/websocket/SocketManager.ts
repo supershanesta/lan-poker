@@ -22,10 +22,9 @@ export default class SocketManager
 
   constructor()
   { 
-    console.log('ENVS', process.env.NEXT_PUBLIC_WS_API_URL, process.env.NEXT_PUBLIC_SOCKET_PATH)
     this.socket = io(process.env.NEXT_PUBLIC_WS_API_URL as string, {
       autoConnect: false,
-      path: process.env.NEXT_PUBLIC_SOCKET_PATH as string,
+      path: 'backend/wsapi',
       transports: ['websocket'],
       withCredentials: true,
     });
