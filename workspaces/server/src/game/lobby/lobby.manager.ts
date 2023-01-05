@@ -64,18 +64,20 @@ export class LobbyManager {
   }
 
   // Periodically clean up lobbies
-  @Cron('*/55 * * * *')
+  @Cron('*/5 * * * *')
   private lobbiesCleaner(): void {
     for (const [lobbyId, lobby] of this.lobbies) {
       const now = new Date().getTime();
       const lobbyCreatedAt = lobby.createdAt.getTime();
       const lobbyLifetime = now - lobbyCreatedAt;
 
-      if (lobbyLifetime > LOBBY_MAX_LIFETIME) {
+      if (lobbyLifetime > LOBBY_MAX_LIFETIME || (lobby?.clients.size === 0 && lobbyLifetime > 60)) {
         lobby.dispatchToLobby<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
           color: 'blue',
           message: 'Game timed out',
         });
+
+        lobby.clients;
 
         lobby.instance.triggerFinish();
 
