@@ -22,9 +22,9 @@ export default class SocketManager
 
   constructor()
   { 
-    this.socket = io(process.env['NEXT_PUBLIC_WS_API_URL'] as string, {
+    this.socket = io(process.env.NEXT_PUBLIC_WS_API_URL as string, {
       autoConnect: false,
-      path: process.env['NEXT_PUBLIC_SOCKET_PATH'],
+      path: process.env.NEXT_PUBLIC_SOCKET_PATH,
       transports: ['websocket'],
       withCredentials: true,
     });
