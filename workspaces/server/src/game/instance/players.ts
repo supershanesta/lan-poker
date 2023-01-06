@@ -39,6 +39,10 @@ export class Players {
     return this.players.find((p) => p.state.id === id) || null;
   }
 
+  public removePlayer(id: number | undefined): void {
+    this.players = this.players.filter((p) => p.state.id !== id);
+  }
+
   public length(): number {
     return this.players.length;
   }

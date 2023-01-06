@@ -66,6 +66,7 @@ export class Lobby {
   public removeClient(client: AuthenticatedSocket): void {
     this.clients.delete(client.id);
     client.leave(this.id);
+    client.data.lobby?.instance.players.removePlayer(client.data.me?.state.id);
     client.data.lobby = null;
 
     // If player leave then the game isn't worth to play anymore

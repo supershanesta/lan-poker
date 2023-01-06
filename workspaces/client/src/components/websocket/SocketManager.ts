@@ -24,7 +24,7 @@ export default class SocketManager
   { 
     this.socket = io(process.env.NEXT_PUBLIC_WS_API_URL as string, {
       autoConnect: false,
-      path: '/backend/wsapi',
+      path: process.env.NEXT_PUBLIC_SOCKET_PATH,
       transports: ['websocket'],
       withCredentials: true,
     });
