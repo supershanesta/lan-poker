@@ -12,7 +12,7 @@ type props = {
 
 export default function Player({ player, className }: props) {
   const { lobbyState } = useLobbyContext();
-  const timer =  lobbyState?.currentTimer && player?.turn && !lobbyState?.hasFinished;
+  const timer = player?.turn && !lobbyState?.hasFinished;
   let message = null;
   let bet = null;
   if (player?.won?.won) {
