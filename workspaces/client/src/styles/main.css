@@ -65,3 +65,13 @@
   height: calc(100% - 12px);
   border-radius: 5px;
 }
+
+.progressContainerOverride {
+  height: 1.5em;
+}
+
+.textContainerOverride {
+}
+
+.textContainerOverride p {
+}

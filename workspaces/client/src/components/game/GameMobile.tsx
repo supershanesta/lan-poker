@@ -4,7 +4,6 @@ import Card from '@components/game/Card';
 import { Badge, LoadingOverlay, Overlay } from '@mantine/core';
 import { MantineColor } from '@mantine/styles';
 import { showNotification } from '@mantine/notifications';
-import { emitEvent } from '@utils/analytics';
 import { useRouter } from 'next/router';
 import Actions from './Actions';
 import Table from './Table';
@@ -14,6 +13,7 @@ import PlayersMobile from './PlayersMobile';
 export default function GameMobile() {
   const router = useRouter();
   const {sm, lobbyState, me, resetMe} = useLobbyContext();
+  console.log(lobbyState);
 
 
   const copyLobbyLink = async () => {

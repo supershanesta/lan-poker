@@ -4,7 +4,6 @@ import { MantineProvider } from '@mantine/core';
 import { RecoilRoot } from 'recoil';
 import { SocketManagerProvider } from '@components/websocket/SocketManagerProvider';
 import { NotificationsProvider } from '@mantine/notifications';
-import { pageView } from '@utils/analytics';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import NoSSR from 'react-no-ssr';
@@ -15,14 +14,6 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function _App(props: AppProps) {
   const {Component, pageProps} = props;
   const router = useRouter();
-
-  useEffect(() => {
-    const handleRouteChange = (url: string) => pageView(url);
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-
-    return () => router.events.off('routeChangeComplete', handleRouteChange);
-  }, [router.events]);
 
   return (
     <NoSSR>

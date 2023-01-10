@@ -2,7 +2,6 @@ import { useLobbyContext } from "@hooks/useLobbyContext";
 import { ClientEvents } from "@memory-cards/shared/client/ClientEvents";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { emitEvent } from "@utils/analytics";
 import { Divider, Select, TextInput, NumberInput } from "@mantine/core";
 
 export default function Introduction() {
@@ -33,7 +32,6 @@ export default function Introduction() {
       },
     });
     setMeState((prev) => ({ ...prev, socketId: clientId, name: userName, balance: 0, active: false, lobbyId: null }))
-    emitEvent("lobby_create");
   };
 
   return (

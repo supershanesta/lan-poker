@@ -20,6 +20,7 @@
     "react-device-detect": "^2.2.2",
     "react-dom": "18.1.0",
     "react-no-ssr": "^1.1.0",
+    "react-progress-bar-timer": "^0.3.4",
     "react-toastify": "^9.0.1",
     "recoil": "^0.7.3-alpha.2",
     "recoil-persist": "^4.2.0",

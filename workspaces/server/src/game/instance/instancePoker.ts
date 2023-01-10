@@ -18,6 +18,8 @@ export class Instance {
 
   public currentRound = 1;
 
+  public timer: any = {};
+
   public deck = new Deck();
 
   public playerTimer = 30;
@@ -45,7 +47,7 @@ export class Instance {
     this.hasStarted = true;
     this.hasFinished = false;
     this.players.setPlayersActive();
-    this.players.getFirstPlayer().startTurn();
+    this.startTurn(this.players.getFirstPlayer());
     this.lobby.dispatchToLobby<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
       color: 'blue',
       message: 'Game started !',
@@ -67,6 +69,33 @@ export class Instance {
     player.setAction({ action, bet: calcBet });
 
     this.nextPlayerTurn();
+  }
+
+  public startTurn(player: Player) {
+    player.startTurn();
+    this.startTimer(player);
+  }
+
+  public startTimer(player: Player) {
+    if (typeof this.timer !== 'undefined') {
+      clearTimeout(this.timer);
+    }
+
+    this.timer = setTimeout(() => {
+      this.lobby.dispatchToLobby<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
+        color: 'red',
+        message: 'Player took too long',
+      });
+      player.setAction({ action: Actions.fold, bet: 0 });
+      this.nextPlayerTurn();
+      this.lobby.dispatchLobbyState();
+    }, this.playerTimer * 1000);
+  }
+
+  public endTimer() {
+    if (typeof this.timer !== 'undefined') {
+      clearTimeout(this.timer);
+    }
   }
 
   public triggerFinish(): void {
@@ -104,7 +133,7 @@ export class Instance {
     const nextPlayer = player?.getNextPlayer();
     console.log(this.players.betsResolved(this.phase.state) && this.players.rotations === 1);
     if (nextPlayer && !(this.players.betsResolved(this.phase.state) && this.players.rotations === 1)) {
-      nextPlayer.startTurn();
+      this.startTurn(nextPlayer);
       //if there is not another player but active players do not have the same bet total for the phase, we need to continue
     } else {
       this.players.rotations = 1;
@@ -112,7 +141,7 @@ export class Instance {
         console.log('going to next phase');
         this.nextPhase();
       }
-      this.players.getFirstPlayer().startTurn();
+      this.startTurn(this.players.getFirstPlayer());
     }
   }
 

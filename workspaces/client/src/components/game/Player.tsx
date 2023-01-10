@@ -1,8 +1,9 @@
-import { Badge } from "@mantine/core";
+import { Badge, Progress } from "@mantine/core";
 import { Actions, Player as PlayerType } from "@memory-cards/shared/common/types";
 import {isMobile} from 'react-device-detect';
 import { useLobbyContext } from '@hooks/useLobbyContext';
 import Card from "./Card";
+import ProgressTimer from 'react-progress-bar-timer';
 
 type props = {
     player: PlayerType | null
@@ -11,6 +12,7 @@ type props = {
 
 export default function Player({ player, className }: props) {
   const { lobbyState } = useLobbyContext();
+  const timer =  lobbyState?.currentTimer && player?.turn && !lobbyState?.hasFinished;
   let message = null;
   let bet = null;
   if (player?.won?.won) {
@@ -42,6 +44,9 @@ export default function Player({ player, className }: props) {
       <Badge className={'justify-self-center'} size="lg">
         {message}{bet}
       </Badge>)}
+        <div className={`flex grid-col-1 gap-1 w-full h-5 ${timer ? '' : 'hidden'}`}>
+          <ProgressTimer classes={{ progressContainer: 'progressContainerOverride', textContainer: 'textContainerOverride' }} fontSize='1em' duration={lobbyState?.playerTimer} barRounded={true} direction={'left'} started={timer} variant={'empty'}/>
+        </div>
       {lobbyState?.hasFinished && player?.active && (
       <div className="flex grid-col-2 gap-1">
         {lobbyState?.cards.filter(card => card.owner === player?.id).map((card, i) => (

@@ -82,6 +82,7 @@ export class Lobby {
   }
 
   public dispatchLobbyState(): void {
+    console.log(this.instance.timer);
     const payload: ServerPayloads[ServerEvents.LobbyState] = {
       lobbyId: this.id,
       mode: this.maxClients === 1 ? 'solo' : 'duo',
