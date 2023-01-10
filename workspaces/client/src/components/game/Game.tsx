@@ -4,7 +4,6 @@ import Card from '@components/game/Card';
 import { Badge, LoadingOverlay, Overlay } from '@mantine/core';
 import { MantineColor } from '@mantine/styles';
 import { showNotification } from '@mantine/notifications';
-import { emitEvent } from '@utils/analytics';
 import { useRouter } from 'next/router';
 import Actions from './Actions';
 import Table from './Table';
@@ -13,20 +12,6 @@ export default function Game() {
   const router = useRouter();
   const {sm, lobbyState, me, resetMe} = useLobbyContext();
 
-
-/*  const onReplay = () => {
-    sm.emit({
-      event: ClientEvents.LobbyCreate,
-      data: {
-        mode: lobbyState?.mode,
-        delayBetweenRounds: lobbyState?.delayBetweenRounds,
-      },
-    });
-
-    emitEvent('lobby_create');
-  };
-
-*/
 
   const copyLobbyLink = async () => {
     const link = `${window.location.origin}?lobby=${lobbyState?.lobbyId}`;
