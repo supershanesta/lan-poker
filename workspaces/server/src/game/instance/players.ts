@@ -27,8 +27,31 @@ export class Players {
     return player;
   }
 
-  public getFirstPlayer(): Player {
-    return this.players[0];
+  public getFirstPlayer(): Player | null {
+    let player: Player | null = this.players[0];
+    while (player !== null) {
+      if (player.state.active === true) {
+        return player;
+      } else {
+        player = player.getNextPlayer();
+      }
+    }
+    return null;
+  }
+
+  public getActivePlayerByPosition(pos: number): Player | null {
+    let currPos = 0;
+    let player: Player | null = this.players[0];
+    while (player !== null) {
+      if (player.state.active === true) {
+        currPos += 1;
+        if (currPos === pos) {
+          return player;
+        }
+      }
+      player = player.getNextPlayer();
+    }
+    return null;
   }
 
   public isPlayerInLobby(id: number) {
@@ -65,7 +88,7 @@ export class Players {
   }
 
   public setPlayersActive(): void {
-    this.players.forEach((p) => (p.state.active = true));
+    this.players.forEach((p) => (p.state.active = p.state.balance > 0 ? true : false));
   }
 
   public nextPhase(): void {

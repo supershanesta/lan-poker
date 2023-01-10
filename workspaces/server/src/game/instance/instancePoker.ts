@@ -47,7 +47,7 @@ export class Instance {
     this.hasStarted = true;
     this.hasFinished = false;
     this.players.setPlayersActive();
-    this.startTurn(this.players.getFirstPlayer());
+    this.setBlindsAndStart();
     this.lobby.dispatchToLobby<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
       color: 'blue',
       message: 'Game started !',
@@ -71,12 +71,14 @@ export class Instance {
     this.nextPlayerTurn();
   }
 
-  public startTurn(player: Player) {
-    player.startTurn();
-    this.startTimer(player);
+  public startTurn(player: Player | null) {
+    if (player) {
+      player?.startTurn();
+      this.startTimer(player);
+    }
   }
 
-  public startTimer(player: Player) {
+  public startTimer(player: Player | null) {
     if (typeof this.timer !== 'undefined') {
       clearTimeout(this.timer);
     }
@@ -86,7 +88,7 @@ export class Instance {
         color: 'red',
         message: 'Player took too long',
       });
-      player.setAction({ action: Actions.fold, bet: 0 });
+      player?.setAction({ action: Actions.fold, bet: 0 });
       this.nextPlayerTurn();
       this.lobby.dispatchLobbyState();
     }, this.playerTimer * 1000);
@@ -193,5 +195,28 @@ export class Instance {
       cards: [...this.deck.getPlayerCards(player.state.id).map((c) => c.card), ...tableCards.map((c) => c.card)],
     }));
     return pokerPlayers;
+  }
+
+  private setBlindsAndStart(): void {
+    const activePlayers = this.players.getActivePlayers();
+    if (activePlayers.length > 2) {
+      // set BB to 2nd player
+      this.players.getActivePlayerByPosition(2)?.setAction({ action: Actions.bet, bet: 10 });
+      // set SM to 3rd player
+      this.players.getActivePlayerByPosition(3)?.setAction({ action: Actions.bet, bet: 5 });
+      // set turn to next player
+      if (activePlayers.length > 3) {
+        this.startTurn(this.players.getActivePlayerByPosition(4));
+      } else {
+        this.startTurn(this.players.getFirstPlayer());
+      }
+    } else {
+      // set BB to 2nd player
+      this.players.getActivePlayerByPosition(2)?.setAction({ action: Actions.bet, bet: 10 });
+      // set SM to 1st player
+      this.players.getActivePlayerByPosition(1)?.setAction({ action: Actions.bet, bet: 5 });
+      // set first player turn
+      this.startTurn(this.players.getFirstPlayer());
+    }
   }
 }

@@ -38,9 +38,11 @@ export class Player {
   }
 
   private addBet(bet: number): void {
-    this.state.balance -= bet;
-    this.state.bets.phase += bet;
-    this.state.bets.total += bet;
+    // account for all in when you don't have enough
+    const actualBet = this.state.balance < bet ? this.state.balance : bet;
+    this.state.balance -= actualBet;
+    this.state.bets.phase += actualBet;
+    this.state.bets.total += actualBet;
   }
 
   public setAction(action: PlayerAction): void {
