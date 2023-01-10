@@ -2,7 +2,6 @@ import { useLobbyContext } from "@hooks/useLobbyContext";
 import { ClientEvents } from "@memory-cards/shared/client/ClientEvents";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { emitEvent } from "@utils/analytics";
 import { Divider, Select, TextInput } from "@mantine/core";
 
 export default function JoinGame() {
