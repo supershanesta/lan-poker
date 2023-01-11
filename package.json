@@ -16,7 +16,8 @@
     "start:prod:server": "yarn workspace @memory-cards/server start:prod",
     "build:prod:client": "yarn workspace @memory-cards/client build:prod",
     "test:server": "yarn workspace @memory-cards/server test",
-    "start": "concurrently \"yarn start:dev:client\" \"yarn start:dev:server\""
+    "start": "concurrently \"yarn start:dev:client\" \"yarn start:dev:server\"",
+    "start:prod": "concurrently \"yarn start:prod:client\" \"yarn start:prod:server\""
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
