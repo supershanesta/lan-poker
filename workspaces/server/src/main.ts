@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.useWebSocketAdapter(new GameIoAdapter(app));
 
-  console.log('SOCKET PATH', process.env.SOCKET_PATH);
+  console.log('SOCKET PATH', process.env.SOCKET_PATH); 
 
   app.enableCors({
     origin: process.env.CORS_ALLOW_ORIGIN,
