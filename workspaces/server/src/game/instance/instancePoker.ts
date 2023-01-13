@@ -205,7 +205,7 @@ export class Instance {
       // set BB to 2nd player
       const player2 = this.players.getActivePlayerByPosition(2);
       if (player2) {
-        this.setPlayersBet(player2, Actions.bet, 10);
+        this.setPlayersBet(player2, Actions.bet, 5);
       }
       // set SM to 3rd player
       const player3 = this.players.getActivePlayerByPosition(3);
@@ -227,7 +227,7 @@ export class Instance {
       // set SM to 1st player
       const player1 = this.players.getActivePlayerByPosition(1);
       if (player1) {
-        this.setPlayersBet(player1, Actions.bet, 10);
+        this.setPlayersBet(player1, Actions.bet, 5);
       }
       // set first player turn
       this.startTurn(this.players.getFirstPlayer());
