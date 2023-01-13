@@ -213,8 +213,10 @@ export class Instance {
     } else {
       // set BB to 2nd player
       this.players.getActivePlayerByPosition(2)?.setAction({ action: Actions.bet, bet: 10 });
+      this.phase.setBet(10, this.players.getActivePlayerByPosition(2)?.state.bets.phase, Actions.bet);
       // set SM to 1st player
       this.players.getActivePlayerByPosition(1)?.setAction({ action: Actions.bet, bet: 5 });
+      this.phase.setBet(5, this.players.getActivePlayerByPosition(2)?.state.bets.phase, Actions.bet);
       // set first player turn
       this.startTurn(this.players.getFirstPlayer());
     }
