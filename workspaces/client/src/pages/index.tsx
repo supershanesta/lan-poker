@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 const Page: NextPage = () => {
   const router = useRouter();
   return (
-    <div className="container max-w-5xl mt-16">
+    <div className="container max-w-5xl mt-16 px-4 md:px-0">
       <Header/>
         <GameManager/>
     </div>

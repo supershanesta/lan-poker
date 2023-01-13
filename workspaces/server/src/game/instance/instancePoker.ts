@@ -63,12 +63,14 @@ export class Instance {
   }
 
   public playerAction(player: Player, action: Actions, bet: number): void {
+    this.setPlayersBet(player, action, bet);
+    this.nextPlayerTurn();
+  }
+
+  private setPlayersBet(player: Player, action: Actions, bet: number): void {
     const calcBet = this.getBet(player, action, bet);
-    console.log('CalcBet', calcBet);
     this.phase.setBet(calcBet, player.state.bets.phase, action);
     player.setAction({ action, bet: calcBet });
-
-    this.nextPlayerTurn();
   }
 
   public startTurn(player: Player | null) {
@@ -201,9 +203,15 @@ export class Instance {
     const activePlayers = this.players.getActivePlayers();
     if (activePlayers.length > 2) {
       // set BB to 2nd player
-      this.players.getActivePlayerByPosition(2)?.setAction({ action: Actions.bet, bet: 10 });
+      const player2 = this.players.getActivePlayerByPosition(2);
+      if (player2) {
+        this.setPlayersBet(player2, Actions.bet, 10);
+      }
       // set SM to 3rd player
-      this.players.getActivePlayerByPosition(3)?.setAction({ action: Actions.bet, bet: 5 });
+      const player3 = this.players.getActivePlayerByPosition(3);
+      if (player3) {
+        this.setPlayersBet(player3, Actions.bet, 10);
+      }
       // set turn to next player
       if (activePlayers.length > 3) {
         this.startTurn(this.players.getActivePlayerByPosition(4));
@@ -212,11 +220,15 @@ export class Instance {
       }
     } else {
       // set BB to 2nd player
-      this.players.getActivePlayerByPosition(2)?.setAction({ action: Actions.bet, bet: 10 });
-      this.phase.setBet(10, this.players.getActivePlayerByPosition(2)?.state.bets.phase, Actions.bet);
+      const player2 = this.players.getActivePlayerByPosition(2);
+      if (player2) {
+        this.setPlayersBet(player2, Actions.bet, 10);
+      }
       // set SM to 1st player
-      this.players.getActivePlayerByPosition(1)?.setAction({ action: Actions.bet, bet: 5 });
-      this.phase.setBet(5, this.players.getActivePlayerByPosition(1)?.state.bets.phase, Actions.bet);
+      const player1 = this.players.getActivePlayerByPosition(1);
+      if (player1) {
+        this.setPlayersBet(player1, Actions.bet, 10);
+      }
       // set first player turn
       this.startTurn(this.players.getFirstPlayer());
     }
