@@ -164,7 +164,7 @@ export class Instance {
         calcBet = this.phase.state.currentPhaseBet - player.state.bets.phase;
         break;
       case Actions.bet:
-        calcBet = bet;
+        calcBet = Math.max(bet, this.phase.state.currentPhaseBet);
         break;
       case Actions.raise:
         calcBet = this.phase.state.currentPhaseBet - player.state.bets.phase + bet;
