@@ -216,7 +216,7 @@ export class Instance {
       this.phase.setBet(10, this.players.getActivePlayerByPosition(2)?.state.bets.phase, Actions.bet);
       // set SM to 1st player
       this.players.getActivePlayerByPosition(1)?.setAction({ action: Actions.bet, bet: 5 });
-      this.phase.setBet(5, this.players.getActivePlayerByPosition(2)?.state.bets.phase, Actions.bet);
+      this.phase.setBet(5, this.players.getActivePlayerByPosition(1)?.state.bets.phase, Actions.bet);
       // set first player turn
       this.startTurn(this.players.getFirstPlayer());
     }
