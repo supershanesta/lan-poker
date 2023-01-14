@@ -22,7 +22,7 @@ export class Phase {
   }
 
   public setBet(bet, phaseBet, action: Actions): void {
-    this.state.currentPhaseBet = bet + phaseBet;
+    this.state.currentPhaseBet = Math.max(bet + phaseBet, this.state.currentPhaseBet);
     this.setPot(bet);
   }
 

@@ -25,7 +25,7 @@ export default function Player({ player, className }: props) {
     bet = ` $${player?.bets.phase}`;
   }
 
-  
+  console.log('PLAYER', player?.id, 'timer', timer)
 
   if (isMobile) {
     return(
