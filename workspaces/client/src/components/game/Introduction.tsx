@@ -39,7 +39,7 @@ export default function Introduction() {
       <h2 className="text-2xl">Are you ready to beat your friends 👋</h2>
 
       <p className="mt-3 text-lg">
-        A simple online poker game that allows you and your friends to create your own lobby, set your own rules, and destory your friendships with banter and trickery.
+        A simple online poker game that allows you and your friends to create your own lobby, set your own rules, and destroy your friendships with banter and trickery.
       </p>
 
       <Divider my="md" />
