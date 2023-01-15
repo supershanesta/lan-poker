@@ -36,7 +36,7 @@ export default function Introduction() {
 
   return (
     <div className="mt-4">
-      <h2 className="text-2xl">Are you ready to beat your friends 👋</h2>
+      <h2 className="text-2xl">Are you ready to beat your friends 🤔</h2>
 
       <p className="mt-3 text-lg">
         A simple online poker game that allows you and your friends to create your own lobby, set your own rules, and destroy your friendships with banter and trickery.
